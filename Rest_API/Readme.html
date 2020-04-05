@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Device Registry Service</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="device-registry-service">Device Registry Service</h1>
+<h2 id="usage">Usage</h2>
+<p>All responses will have the form</p>
+<pre><code class="language-json"><div>{
+    <span class="hljs-attr">"date"</span>: <span class="hljs-string">"Mixed type holding the content"</span>,
+    <span class="hljs-attr">"message"</span> :  <span class="hljs-string">"Description of what happened"</span>
+}
+</div></code></pre>
+<p>Subsequent response definition will only detail the expected value of the data 'field'</p>
+<h3 id="list-all-devides">List all devides</h3>
+<p><strong>Definition</strong></p>
+<p><code>GET /devices</code></p>
+<p><strong>Response</strong></p>
+<ul>
+<li><code>200 OK</code> on success</li>
+</ul>
+<pre><code class="language-json"><div>[
+    {
+        <span class="hljs-attr">"identifier"</span>:<span class="hljs-string">"floor-lamp"</span>,
+        <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Floor Lamp"</span>,
+        <span class="hljs-attr">"device_type"</span>:<span class="hljs-string">"switch"</span>,
+        <span class="hljs-attr">"controller_gateway"</span>:<span class="hljs-string">"191.1.0.2"</span>,
+    }
+    {
+        <span class="hljs-attr">"identifier"</span>:<span class="hljs-string">"samsung-tv"</span>,
+        <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Samsung TV"</span>,
+        <span class="hljs-attr">"device_type"</span>:<span class="hljs-string">"tv"</span>,
+        <span class="hljs-attr">"controller_gateway"</span>:<span class="hljs-string">"191.1.0.9"</span>,
+    }
+]
+
+</div></code></pre>
+<h3 id="registering-a-new-device">Registering a new device</h3>
+<p><strong>Definition</strong></p>
+<p><code>Post /devices</code></p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><code>&quot;identifier&quot;:string</code> a globally unique identifier for this device</li>
+<li><code>&quot;name&quot;:string</code> a friendly name for this device</li>
+<li><code>&quot;device_type&quot;:string</code> the type of the device as understood by the client</li>
+<li><code>&quot;controller_gateway&quot;: string</code> the IP adress of the device's controller</li>
+</ul>
+<p>If a device with the given identifier already exists, the existing device will be overwritten.</p>
+<p><strong>Response</strong></p>
+<ul>
+<li>'201 created' on sucess</li>
+</ul>
+<pre><code class="language-json"><div>{
+    <span class="hljs-attr">"identifier"</span>:<span class="hljs-string">"samsung-tv"</span>,
+    <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Samsung TV"</span>,
+    <span class="hljs-attr">"device_type"</span>:<span class="hljs-string">"tv"</span>,
+    <span class="hljs-attr">"controller_gateway"</span>:<span class="hljs-string">"191.1.0.9"</span>,
+}
+</div></code></pre>
+<h2 id="lookup-device-details">Lookup device details</h2>
+<p><code>GET /device/&lt;identifier&gt;</code></p>
+<p><strong>Response</strong></p>
+<ul>
+<li><code>404 Not Found</code> if the device does not exist</li>
+<li><code>200 OK</code> on success</li>
+</ul>
+<pre><code class="language-json"><div>{
+    <span class="hljs-attr">"identifier"</span>:<span class="hljs-string">"samsung-tv"</span>,
+    <span class="hljs-attr">"name"</span>:<span class="hljs-string">"Samsung TV"</span>,
+    <span class="hljs-attr">"device_type"</span>:<span class="hljs-string">"tv"</span>,
+    <span class="hljs-attr">"controller_gateway"</span>:<span class="hljs-string">"191.1.0.9"</span>,
+}
+</div></code></pre>
+<h2 id="delete-a-device">Delete a device</h2>
+<p><strong>Definition</strong></p>
+<p><code>DELETE /device/&lt;identifier&gt;</code></p>
+<p><strong>Response</strong></p>
+<ul>
+<li><code>404 Not Found</code> if the device does not exist</li>
+<li><code>204 No Content</code> on success</li>
+</ul>
+
+    </body>
+    </html>
